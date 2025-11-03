@@ -351,7 +351,7 @@ _Для всех инстансов используйте_:
    ```bash
       ping -c 4 google.com
    ```
-   ![alt text](image-16.png)
+   ![alt text](./images/image-16.png)
    > Если пинги успешны, значит публичная подсеть и IGW настроены правильно.
 
 5. С `bastion-host` попробуйте подключиться к `db-server`:
