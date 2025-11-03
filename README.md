@@ -35,7 +35,7 @@
     Что обозначает маска /16? И почему нельзя использовать, например, /8?
     Нажмите Create VPC.
 > VPC — это “контейнер” для подсетей. Внутри одной VPC можно создавать десятки подсетей с разными маршрутами и правилами.
- ![alt text](image.png)   
+ ![alt text](./images/image.png)   
 
 #### Что обозначает маска /16? И почему нельзя использовать, например, /8?
 ***
@@ -56,7 +56,7 @@ Internet Gateway позволяет ресурсам внутри VPC выход
    2. Нажмите `Actions` → `Attach to VPC`.
    3. В списке выберите `student-vpc-kXX`.
    4. Подтвердите действие.
-![alt text](image-1.png)
+![alt text](./images/image-1.png)
 
 ### Шаг 4. Создание подсетей
 
@@ -75,7 +75,7 @@ _Подсети (subnets)_ — это сегменты внутри VPC, кот�
    4. `IPv4 CIDR block`: `10.(k%30).1.0/24`
       > Диапазон IP-адресов, которые будут выданы ресурсам в этой подсети
 3. Нажмите `Create subnet`.
-![alt text](image-2.png)
+![alt text](./images/image-2.png)
 
 
 ### Является ли подсеть "публичной" на данный момент? Почему?
@@ -100,7 +100,7 @@ _Подсети (subnets)_ — это сегменты внутри VPC, кот�
       > Диапазон адресов не должен пересекаться с диапазоном публичной подсети.
 3. Нажмите `Create subnet`.
 
-![alt text](image-3.png)
+![alt text](./images/image-3.png)
 
 #### Является ли подсеть "приватной" на данный момент? Почему?
 Нет, подсеть ещё не является приватной. На данном этапе это просто ещё один изолированный сегмент сети внутри VPC. Чтобы сделать её приватной, необходимо:
@@ -134,10 +134,10 @@ _Подсети (subnets)_ — это сегменты внутри VPC, кот�
          > Это означает “весь остальной трафик, не относящийся к внутренним адресам VPC”.
       2. `Target`: выберите Internet Gateway (`student-igw-kXX`).
    6. Нажмите `Save changes`.
-   ![alt text](image-4.png)
+   ![alt text](./images/image-4.png)
    7. Перейдите на вкладку `Subnet associations` → `Edit subnet associations`.  
    8. Отметьте `public-subnet-kXX` и нажмите `Save associations`.
-    ![alt text](image-5.png)
+    ![alt text](./images/image-5.png)
 ***
 > Зачем необходимо привязать таблицу маршрутов к подсети?
 - Потому что AWS не может “догадаться”, куда направлять пакеты без указания маршрутов.
@@ -159,7 +159,7 @@ _Подсети (subnets)_ — это сегменты внутри VPC, кот�
    3. Нажмите `Create route table`.
 3. Перейдите на вкладку `Subnet associations` → `Edit subnet associations`.
 4. Отметьте `private-subnet-kXX` и нажмите `Save associations`.
-![alt text](image-6.png)
+![alt text](./images/image-6.png)
 
 На данный момент все ресурсы, которые будут созданы в приватной подсети, не смогут выходить в Интернет, так как у нас нет NAT Gateway и соответствующего маршрута.
 
@@ -204,7 +204,7 @@ Elastic IP — это статический публичный IPv4-адрес,
 
 1. В левой панели выберите `Elastic IPs` → `Allocate Elastic IP address`.
 2. Нажмите Allocate.
-![alt text](image-7.png)
+![alt text](./images/image-7.png)
 
 #### Шаг 6.2. Создание NAT Gateway
 
@@ -217,7 +217,7 @@ Elastic IP — это статический публичный IPv4-адрес,
    4. `Elastic IP allocation ID`: выберите EIP, созданный на предыдущем шаге.
 3. Нажмите `Create NAT gateway`.
 
-![alt text](image-8.png)
+![alt text](./images/image-8.png)
 Подождите 2–3 минуты, пока статус изменится с `Pending` на `Available`. Это значит, что NAT Gateway готов к работе.
 
 #### Шаг 6.3. Изменение приватной таблицы маршрутов
@@ -228,7 +228,7 @@ Elastic IP — это статический публичный IPv4-адрес,
    1. `Destination`: `0.0.0.0/0`
    2. `Target`: выберите NAT Gateway (`nat-gateway-kXX`).
 4. Нажмите `Save changes`.
-![alt text](image-9.png)
+![alt text](./images/image-9.png)
 Теперь ресурсы в приватной подсети смогут выходить в Интернет через NAT Gateway.
 
 ### Шаг 7. Создание Security Groups
@@ -240,11 +240,11 @@ _Security Group (SG)_ — это виртуальный брандмауэр н�
    1. `Security group name`: `web-sg-kXX`
    2. `Description`: `Security group for web server`
    3. `VPC`: выберите вашу VPC (`student-vpc-kXX`)
-   ![alt text](image-10.png)
+   ![alt text](./images/image-10.png)
 3. В разделе Inbound rules добавьте правила разрешающее следующие типы трафика:
    1. Тип: `HTTP`, Протокол: `TCP`, Порт: `80`, Источник: `0.0.0.0/0`
    2. Тип: `HTTPS`, Протокол: `TCP`, Порт: `443`, Источник: `0.0.0.0/0`
-   ![alt text](image-11.png)
+   ![alt text](./images/image-11.png)
 4. Создайте еще две Security Groups:
    1. `bastion-sg-kXX` для bastion host с разрешением входящего трафика на порт `22` (SSH) только из вашего IP-адреса.
    ![alt text](image-12.png)
@@ -252,7 +252,7 @@ _Security Group (SG)_ — это виртуальный брандмауэр н�
       1. Тип: `MySQL/Aurora`, Протокол: `TCP`, Порт: `3306`, Источник: `web-sg-kXX` (разрешаем доступ только с веб-сервера)
       2. Тип: `MySQL/Aurora`, Протокол: `TCP`, Порт: `3306`, Источник: `bastion-sg-kXX` (разрешаем доступ только с bastion host)
       3. Тип: `SSH`, Протокол: `TCP`, Порт: `22`, Источник: `bastion-sg-kXX` (разрешаем доступ только с bastion host)
-      ![alt text](image-13.png)
+      ![alt text](./images/image-13.png)
 
 #### Что такое _Bastion Host_ и зачем он нужен в архитектуре с приватными подсетями?
 ***
@@ -324,7 +324,7 @@ _Для всех инстансов используйте_:
    dnf install -y mariadb105
    ```
 
-![alt text](image-14.png)
+![alt text](./images/image-14.png)
 
 ### Шаг 9. Проверка работы
 
@@ -345,7 +345,7 @@ _Для всех инстансов используйте_:
    ```bash
    ssh -i <your-nickname>-key.pem ec2-user@<Bastion-Host-Public-IP>
    ```
-   ![alt text](image-15.png)
+   ![alt text](./images/image-15.png)
 4. Проверьте подключение к интернету с `bastion-host` выполнив `ping`:
 
    ```bash
